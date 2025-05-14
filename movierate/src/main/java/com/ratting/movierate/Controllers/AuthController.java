@@ -1,5 +1,6 @@
 package com.ratting.movierate.Controllers;
 
+import com.ratting.movierate.DTOs.LoginRespond;
 import com.ratting.movierate.DTOs.UserRequest;
 import com.ratting.movierate.Mapping.UserMapping;
 import com.ratting.movierate.Model.RefreshTokenRequest;
@@ -59,7 +60,7 @@ public class AuthController {
             user.setRefreshToken(tokenResponse.getRefreshToken());
             userServiceImp.addUser(user);
 
-            return ResponseEntity.ok(tokenResponse);
+            return ResponseEntity.ok(new LoginRespond(tokenResponse,user.getRole()));
         }
         catch(Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
