@@ -22,10 +22,15 @@ public class MovieController {
     private final MovieServiceImpl movieService;
     private final OmdbRatingServiceImpl omdbRatingService;
 
-    @GetMapping("/getAll")
-    public ResponseEntity<List<MovieRespond>> getAll(){
-        var result =movieService.getAll();
+    @GetMapping("/getMoviesPage/{page}")
+    public ResponseEntity<List<MovieRespond>> getMoviesPage(@PathVariable Integer page){
+        var result =movieService.getMoviesPage(page);
         return ResponseEntity.ok(result);
+    }
+    @GetMapping("/getNumberOfMovies")
+    public Integer getNumberOfMovies(){
+        var result =movieService.getNumberOfMovies();
+        return result;
     }
     @GetMapping("/getMovie/{id}")
     public ResponseEntity<?> getMovie(@PathVariable Long id){
@@ -51,8 +56,6 @@ public class MovieController {
         }
 
     }
-
-
 
     private Long  addMovie( Movie request){
 
@@ -80,11 +83,11 @@ public class MovieController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/getMoviefromOmdb/{title}")
-    public ResponseEntity<?> getMoviefromOmdb(@PathVariable String title){
+    @GetMapping("/getMoviefromOmdb/{Imdb_id}")
+    public ResponseEntity<?> getMoviefromOmdb(@PathVariable String Imdb_id){
 
         try {
-            var result =movieService.getMoviefromOmdb(title);
+            var result =movieService.getMoviefromOmdb(Imdb_id);
             return ResponseEntity.ok(result);
         }
         catch (Exception e)
@@ -95,10 +98,10 @@ public class MovieController {
     }
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/searchFormMovieOnOmdb/{title}")
-    public ResponseEntity<?> searchFormMovieOnOmdb(@PathVariable String title){
+    public ResponseEntity<?> searchFormMovieOnOmdb(@PathVariable String title,@RequestParam(defaultValue = "1")Integer page){
 
         try {
-            var result =movieService.searchFormMovieOnOmdb(title);
+            var result =movieService.searchFormMovieOnOmdb(title,page);
             return ResponseEntity.ok(result);
         }
         catch (Exception e)
@@ -108,16 +111,16 @@ public class MovieController {
 
     }
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/addMoviefromOmdb/{title}")
-    public ResponseEntity<?> addMoviefromOmdb(@PathVariable String title){
+    @PostMapping("/addMoviefromOmdb/{imdb}")
+    public ResponseEntity<?> addMoviefromOmdb(@PathVariable String imdb){
         try {
-            var result =movieService.getMoviefromOmdb(title);
+            var result =movieService.getMoviefromOmdb(imdb);
             addMovie(result);
             return ResponseEntity.ok(result);
         }
         catch (MovieNotFoundException e)
         {
-            return ResponseEntity.badRequest().body("no movie has this name on OMDB");
+            return ResponseEntity.badRequest().body("no movie found");
         }
         catch (MovieExistFoundException e)
         {

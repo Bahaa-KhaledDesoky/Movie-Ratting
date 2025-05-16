@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface MovieService {
     public MovieRespond getMovie(Long id);
-    public MovieRespond getMovieByTitleDB(String title);
+    public Integer getNumberOfMovies();
     public List<MovieRespond> getMovieByTitleDBUsingLike(String title);
     public Movie getMoviefromOmdb(String title);
-    public SearchOmdbRespond searchFormMovieOnOmdb(String title);
-    public List<MovieRespond> getAll();
+    public SearchOmdbRespond searchFormMovieOnOmdb(String title,Integer page);
+    public List<MovieRespond> getMoviesPage(Integer page);
     public Long deleteMovie(Long id);
     public void deleteMovies(List<Long> movieIds);
     public Long addMovie(Movie request);

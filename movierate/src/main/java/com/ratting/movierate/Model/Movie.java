@@ -79,6 +79,7 @@ public class Movie {
     private String imdbVotes;
 
     @JsonProperty("imdbID")
+    @Column(unique = true)
     private String imdbID;
 
     @JsonProperty("Type")

@@ -8,6 +8,8 @@ import com.ratting.movierate.Model.Movie;
 import com.ratting.movierate.Repository.MovieRepositiory;
 import com.ratting.movierate.Service.MovieService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,10 +31,8 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieRespond getMovieByTitleDB(String title) {
-        Movie movie= movieRepositiory.findByTitle(title)
-                .orElseThrow(() -> new MovieNotFoundException("Cant find movie with this title : "+title));
-        return movieMapping.toMovieRespond(movie);
+    public Integer getNumberOfMovies() {
+        return (Integer) movieRepositiory.findAll().size();
     }
 
     @Override
@@ -48,20 +48,20 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Movie getMoviefromOmdb(String title) {
-        String url = "https://www.omdbapi.com/?apikey=" + "4e4b3c4b" + "&t=" + title;
+    public Movie getMoviefromOmdb(String imdb_id) {
+        String url = "https://www.omdbapi.com/?apikey=" + "4e4b3c4b" + "&i=" + imdb_id+"&type=movie";
 
         Movie result= restTemplate.getForObject(url, Movie.class);
         if(result.getResponse().equals("True"))
             return result;
         else {
-            throw new MovieNotFoundException("no movie has this name");
+            throw new MovieNotFoundException("no movie found");
         }
 
     }
     @Override
-    public SearchOmdbRespond searchFormMovieOnOmdb(String title) {
-        String url = "https://www.omdbapi.com/?apikey=" + "4e4b3c4b" + "&s=" + title;
+    public SearchOmdbRespond searchFormMovieOnOmdb(String title,Integer page) {
+        String url = "https://www.omdbapi.com/?apikey=" + "4e4b3c4b" + "&s=" + title+"&type=movie"+"&page="+page;
         SearchOmdbRespond result= restTemplate.getForObject(url, SearchOmdbRespond.class);
         if(result.response().equals("True"))
             return result;
@@ -71,8 +71,9 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<MovieRespond> getAll() {
-        return movieRepositiory.findAll().stream()
+    public List<MovieRespond> getMoviesPage(Integer page) {
+        Pageable pageable = PageRequest.of(page,10);
+        return movieRepositiory.findAll(pageable).stream()
                 .map(movieMapping::toMovieRespond)
                 .collect(Collectors.toList());
     }
@@ -96,7 +97,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Long addMovie(Movie request) {
-        if(!movieRepositiory.findByTitle(request.getTitle()).isPresent())
+        if(!movieRepositiory.findByImdbID(request.getImdbID()).isPresent())
             return movieRepositiory.save(request).getId();
         else
             throw new MovieExistFoundException();
