@@ -1,82 +1,29 @@
-import { Component, inject, signal } from '@angular/core';
-import { PrimaryButtonComponent } from '../primary-button/primary-button.component';
-import { CartService } from '../../services/cart.service';
-import {RouterLink} from '@angular/router'
+import { Component } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
-  imports: [PrimaryButtonComponent,RouterLink],
+  standalone: true,
+  imports: [RouterModule, CommonModule],
   template: `
-    <div class="header">
-  <button class="logo" routerLink="/">{{title()}}</button>
-  <div class="header-right">
-    <app-primary-button [label]="'Cart ('+cartService.cart().length+')'" routerLink="/cart"/>
-    
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: #222; color: #fff;">
+      <div style="display: flex; align-items: center; gap: 2rem;">
+        <img src="assets/logo.png" alt="Logo" style=" height: 60px; margin-right: 1rem;" />
+        <a routerLink="/movies" style="color: #fff; text-decoration: none; font-weight: 600; font-size: 1.2rem;">Movies</a>
+        <a *ngIf="authService.isAdmin()" routerLink="/movies/add-omdb" style="color: #ff9800; text-decoration: none; font-weight: 600; font-size: 1.2rem;">Add from OMDB</a>
     </div>
-</div>
+      <button (click)="logout()" style="background: #dc3545; color: #fff; border: none; border-radius: 6px; padding: 0.5rem 1.5rem; font-size: 1rem; font-weight: 600; cursor: pointer;">Logout</button>
+    </nav>
   `,
-  styles: `
-  
-  .header {
-  overflow: hidden;
-  background-color: #f1f1f1;
-  padding: 20px 10px;
-}
-
-/* Style the header links */
-.header a {
-  float: left;
-  color: black;
-  text-align: center;
-  padding: 12px;
-  text-decoration: none;
-  font-size: 18px;
-  line-height: 25px;
-  border-radius: 4px;
-}
-
-/* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
-.header button.logo {
-  font-size: 25px;
-  font-weight: bold;
-}
-
-/* Change the background color on mouse-over */
-.header button:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-/* Style the active/current link*/
-.header button.active {
-  background-color: dodgerblue;
-  color: white;
-}
-
-/* Float the link section to the right */
-.header-right {
-  float: right;
-}
-
-/* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */
-@media screen and (max-width: 500px) {
-  .header button {
-    float: none;
-    display: block;
-    text-align: left;
-  }
-  .header-right {
-    float: none;
-  }
-}`
+  styles: ''
 })
-
-
 export class HeaderComponent {
+  constructor(public authService: AuthService, private router: Router) {}
 
-  title = signal("bahaa");
-  cartService =inject(CartService);
-  onClick(){
-    console.log("clicked");
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

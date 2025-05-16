@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { UserRequest } from '../../../models/auth.model';
+import { MovieService } from '../../../services/movie.service';
 
 @Component({
   selector: 'app-login',
@@ -149,7 +150,8 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private movieService: MovieService
   ) {}
 
   onSubmit(): void {
@@ -175,11 +177,7 @@ export class LoginComponent {
         this.loading = false;
 
         // Navigate based on role
-        if (response.userRole === 'ADMIN') {
-          this.router.navigate(['/admin']);
-        } else {
-          this.router.navigate(['/movies']);
-        }
+        this.router.navigate(['/movies']);
       },
       error: (err) => {
         console.log('Login error:', err);

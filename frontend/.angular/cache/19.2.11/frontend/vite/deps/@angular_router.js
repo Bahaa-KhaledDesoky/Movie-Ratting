@@ -1,7 +1,7 @@
 import {
   Title
-} from "./chunk-KABCMVRG.js";
-import "./chunk-KQMIGLZ7.js";
+} from "./chunk-UI7IJY4J.js";
+import "./chunk-ASOULLHX.js";
 import {
   HashLocationStrategy,
   LOCATION_INITIALIZED,
@@ -9,27 +9,23 @@ import {
   LocationStrategy,
   PathLocationStrategy,
   ViewportScroller
-} from "./chunk-ZFPP6FAC.js";
+} from "./chunk-N5JWW7ZA.js";
 import {
   DOCUMENT
-} from "./chunk-JDGHXC7F.js";
+} from "./chunk-RK2FHY2E.js";
 import {
   APP_BOOTSTRAP_LISTENER,
   ApplicationRef,
   Attribute,
-  BehaviorSubject,
   ChangeDetectorRef,
   Compiler,
   Component,
-  ConnectableObservable,
   Console,
   ContentChildren,
   DestroyRef,
   Directive,
-  EMPTY,
   ENVIRONMENT_INITIALIZER,
   ElementRef,
-  EmptyError,
   EnvironmentInjector,
   EventEmitter,
   HostBinding,
@@ -48,53 +44,23 @@ import {
   Renderer2,
   RuntimeError,
   SkipSelf,
-  Subject,
-  Subscription,
   Version,
   ViewContainerRef,
-  __spreadProps,
-  __spreadValues,
   afterNextRender,
   booleanAttribute,
-  catchError,
-  combineLatest,
-  concat,
-  concatMap,
   createEnvironmentInjector,
-  defaultIfEmpty,
-  defer,
-  filter,
-  finalize,
-  first,
-  from,
   inject,
   input,
   isInjectable,
   isNgModule,
-  isObservable,
   isPromise,
   isStandalone,
-  last,
   makeEnvironmentProviders,
-  map,
-  mergeAll,
-  mergeMap,
-  of,
   performanceMarkFeature,
-  pipe,
   provideAppInitializer,
-  refCount,
   reflectComponentType,
   runInInjectionContext,
-  scan,
   setClassMetadata,
-  startWith,
-  switchMap,
-  take,
-  takeLast,
-  takeUntil,
-  tap,
-  throwError,
   ɵɵNgOnChangesFeature,
   ɵɵattribute,
   ɵɵcontentQuery,
@@ -113,7 +79,43 @@ import {
   ɵɵloadQuery,
   ɵɵqueryRefresh,
   ɵɵsanitizeUrlOrResourceUrl
-} from "./chunk-3GUSDB4H.js";
+} from "./chunk-QBB3H5ZU.js";
+import {
+  BehaviorSubject,
+  ConnectableObservable,
+  EMPTY,
+  EmptyError,
+  Subject,
+  Subscription,
+  __spreadProps,
+  __spreadValues,
+  catchError,
+  combineLatest,
+  concat,
+  concatMap,
+  defaultIfEmpty,
+  defer,
+  filter,
+  finalize,
+  first,
+  from,
+  isObservable,
+  last,
+  map,
+  mergeAll,
+  mergeMap,
+  of,
+  pipe,
+  refCount,
+  scan,
+  startWith,
+  switchMap,
+  take,
+  takeLast,
+  takeUntil,
+  tap,
+  throwError
+} from "./chunk-S35MAB2V.js";
 
 // node_modules/@angular/router/fesm2022/router-B-Y85L0c.mjs
 var PRIMARY_OUTLET = "primary";
