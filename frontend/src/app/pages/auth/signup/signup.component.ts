@@ -179,22 +179,16 @@ export class SignupComponent {
 
     this.authService.signup(this.credentials).subscribe({
       next: (response) => {
-        console.log('Full response:', response);
-
-        // Check the status code
-        if (response.status === 226) {
-          // Username is taken
-          this.error = response.body || 'This username is already taken';
+        if (typeof response === 'string' && response.includes('This user name is taken')) {
+          this.error = 'This username is already taken';
           this.loading = false;
-        } else if (response.status === 200) {
-          // Successful signup
-          this.loading = false;
-          alert('Account created successfully! Please login.');
-          this.router.navigate(['/login']);
+          return;
         }
+        this.loading = false;
+        alert('Account created successfully! Please login.');
+        this.router.navigate(['/login']);
       },
       error: (err) => {
-        console.log('Signup error:', err);
         this.error = err.error || 'Signup failed. Please try again.';
         this.loading = false;
       }

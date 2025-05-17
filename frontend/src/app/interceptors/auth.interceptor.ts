@@ -6,7 +6,6 @@ import { catchError, switchMap } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  // Do not attach token or refresh logic for AuthController endpoints
   if (req.url.includes('/api/auth/')) {
     return next(req);
   }
@@ -29,17 +28,17 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       if (error.status === 401) {
         const refreshToken = authService.getRefreshToken();
         if (refreshToken) {
-          // Call backend to get new access token
+      
           return http.get(`http://localhost:8081/api/auth/access/${refreshToken}`, { responseType: 'text' }).pipe(
             switchMap((newAccessToken: string) => {
               authService.saveToken(newAccessToken);
-              // Retry the original request with the new token
+              
               const retryReq = req.clone({
                 setHeaders: {
                   Authorization: `Bearer ${newAccessToken}`
                 }
               });
-              // If the retried request returns 401 again, logout
+              
               return next(retryReq).pipe(
                 catchError(retryError => {
                   if (retryError.status === 401) {
@@ -50,7 +49,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
               );
             }),
             catchError(refreshError => {
-              // If refresh also fails with 401, logout user
+              
               if (refreshError.status === 401) {
                 authService.logout();
               }

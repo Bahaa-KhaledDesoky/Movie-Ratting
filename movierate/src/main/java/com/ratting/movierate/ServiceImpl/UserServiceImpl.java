@@ -26,6 +26,9 @@ public class UserServiceImpl implements UserService {
 
             String hashpassword=hashPassword(request.getPassword());
             request.setPassword(hashpassword);
+            int size = userRepositiory.findAll().size();
+            if(size==0)
+                request.setRole("ADMIN");
             return userRepositiory.save(request).getId();
         }
         else

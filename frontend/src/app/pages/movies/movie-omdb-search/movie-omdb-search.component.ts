@@ -138,13 +138,13 @@ export class MovieOmdbSearchComponent {
 
   selectAll() {
     if (this.areAllSelected()) {
-      // Deselect all
+      
       this.results.forEach(m => {
         m.selected = false;
       });
       this.selectedMovies = [];
     } else {
-      // Select all
+      
       this.results.forEach(m => {
         m.selected = true;
       });
