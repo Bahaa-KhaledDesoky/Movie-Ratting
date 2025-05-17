@@ -6,6 +6,7 @@ import com.ratting.movierate.Security.CustomUserDetails;
 import com.ratting.movierate.Security.CustomUserDetailsService;
 import com.ratting.movierate.Security.JwtUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +16,7 @@ public class AuthService {
 
     private final JwtUtils jwtUtil;
     private final CustomUserDetailsService userDetailsService;
+
 
     public TokenResponse accessToken(RefreshTokenRequest refreshTokenRequest) {
         String refreshToken = refreshTokenRequest.getRefreshToken();
@@ -33,5 +35,7 @@ public class AuthService {
             return new TokenResponse(newRefreshToken, newAccessToken);
 
     }
+
+
 
 }

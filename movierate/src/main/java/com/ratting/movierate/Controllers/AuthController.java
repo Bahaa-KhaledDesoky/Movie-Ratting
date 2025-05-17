@@ -47,15 +47,7 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody UserRequest logInRequest) {
 
         try {
-            if (!userServiceImp.userExist(logInRequest.username())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("wrong user name");
-            }
-            User user=userServiceImp.getUserByUserName(logInRequest.username());
-            if(!user.getPassword().equals(logInRequest.password()))
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("wrong password");
-
+            User user=userServiceImp.Login(logInRequest);
             TokenResponse tokenResponse=authService.getRefreshToken(user.getUsername());
             user.setRefreshToken(tokenResponse.getRefreshToken());
             userServiceImp.addUser(user);

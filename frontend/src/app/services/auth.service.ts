@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserRequest, LoginRespond } from '../models/auth.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { UserRequest, LoginRespond } from '../models/auth.model';
 export class AuthService {
   private apiUrl = 'http://localhost:8081/api/auth';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   login(credentials: UserRequest): Observable<LoginRespond> {
     return this.http.post<LoginRespond>(`${this.apiUrl}/login`, credentials);
@@ -62,6 +63,7 @@ export class AuthService {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('userRole');
+    this.router.navigate(['/login']);
   }
 
   getUsernameFromToken(): string | null {

@@ -1,22 +1,31 @@
 package com.ratting.movierate.ServiceImpl;
 
+import com.ratting.movierate.DTOs.LoginRespond;
 import com.ratting.movierate.DTOs.UserRequest;
 import com.ratting.movierate.Exceptions.UserNotFoundException;
+import com.ratting.movierate.Exceptions.WrongPasswordException;
+import com.ratting.movierate.Model.TokenResponse;
 import com.ratting.movierate.Model.User;
 import com.ratting.movierate.Repository.UserRepositiory;
 import com.ratting.movierate.Service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepositiory userRepositiory;
+    private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Override
     public Long Register(User request) {
         if(!userExist(request.getUsername()))
         {
 
+            String hashpassword=hashPassword(request.getPassword());
+            request.setPassword(hashpassword);
             return userRepositiory.save(request).getId();
         }
         else
@@ -27,13 +36,20 @@ public class UserServiceImpl implements UserService {
             return userRepositiory.save(request).getId();
     }
     @Override
-    public Long Login(UserRequest request) {
-        User user =getUserByUserName(request.username());
-        if(request.password().equals(user.getPassword()))
-        {
-            return user.getId();
+    public User Login(UserRequest request) {
+        try {
+            if (!userExist(request.username())) {
+                throw new UserNotFoundException(request.username());
+            }
+            User user=getUserByUserName(request.username());
+            if(!matches(request.password(),user.getPassword()))
+                throw new WrongPasswordException();
+            return user;
         }
-        return null;
+        catch(Exception e) {
+            throw new RuntimeException();
+        }
+
     }
 
     @Override
@@ -64,4 +80,12 @@ public class UserServiceImpl implements UserService {
         User user =userRepositiory.findByUsername(username).orElseThrow(()->new UserNotFoundException(username));
         return user;
     }
+    private static String hashPassword(String rawPassword) {
+        return passwordEncoder.encode(rawPassword);
+    }
+
+    private static boolean matches(String rawPassword, String hashedPassword) {
+        return passwordEncoder.matches(rawPassword, hashedPassword);
+    }
+
 }
