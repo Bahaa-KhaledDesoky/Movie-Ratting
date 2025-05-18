@@ -3,11 +3,7 @@
 A full-stack web application for discovering, rating, and managing movies. Built with Spring Boot (Java) for the backend and Angular for the frontend, MovieRate allows users to browse movies, rate them, and for admins to manage the movie database, including importing from OMDB.
 
 ## Demo
-
-[![Watch the demo](https://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
-
-*Replace `YOUR_VIDEO_ID` with your actual YouTube video ID after uploading your demo!*
-
+[Watch the demo video](https://drive.google.com/file/d/1tqsAM1C-t5CpS-9yqxE5FImyObKICoNe/view?usp=sharing) 
 ---
 
 ## Features
@@ -26,6 +22,8 @@ A full-stack web application for discovering, rating, and managing movies. Built
 
 ### General
 - Seamless token refresh and automatic logout on session expiration
+- the access token expire every 5h
+- the refresh token expire every 7d 
 - Error handling and user feedback for all major actions
 
 ---
